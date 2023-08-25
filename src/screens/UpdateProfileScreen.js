@@ -62,7 +62,16 @@ const UpdateProfileScreen = ({ route }) => {
         <SafeAreaView style={styles.container}>
             <View>
                 <View style={styles.headerContainer}>
-                    <Text style={styles.title}>Edit Profile</Text>
+                    <View style={styles.headerIcon}>
+                        <MyIcon
+                            name="chevron-back-outline"
+                            size={30}
+                            color="white"
+                            onPress={
+                                () => navigation.goBack(    )
+                            } />
+                        <Text style={styles.title}>Edit Profile</Text>
+                    </View>
                     <Image source={require("../assets/bgc.jpg")} style={[styles.bgcImage, { height: bgcImageHeight }]} />
                     <Image source={require("../assets/user.jpg")} style={styles.userImage} />
                     <MyIcon name="camera-outline" size={22} color="white" style={styles.cameraIcon} />
@@ -101,11 +110,17 @@ const styles = StyleSheet.create({
         flex: 1,
         position: 'relative',
     },
+    headerIcon: {
+        position: "absolute",
+        zIndex: 1,
+        flexDirection: "row",
+        width: "95%",
+        justifyContent: "space-between",
+        color: "white",
+        top: 10,
+    },
     title: {
         color: "white",
-        zIndex: 1,
-        position: "absolute",
-        top: 20,
         fontSize: 18,
     },
     bgcImage: {

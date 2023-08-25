@@ -11,12 +11,12 @@ import {
 import axios from 'axios';
 import MyIcon from '../components/MyIcon';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseURL = 'http://www.kursadozdemir.com';
 
 const ProfileScreen = ({ route }) => {
     const [profileData, setProfileData] = useState({});
-    const token = route.params.token;
 
     const navigation = useNavigation();
 
@@ -26,6 +26,7 @@ const ProfileScreen = ({ route }) => {
 
     const fetchProfileData = async () => {
         try {
+            const token = await AsyncStorage.getItem('token');
             const response = await axios.post(`${baseURL}/User/GetMyProfile`, {
                 token: token,
             })
@@ -43,14 +44,15 @@ const ProfileScreen = ({ route }) => {
     };
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-
+        <View style={styles.container}>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}>
                 <View style={styles.editIcon}>
                     <MyIcon
                         name="create"
                         size={30}
-                        color="black"
+                        color="white"
                         onPress={
                             () => navigation.navigate('UpdateProfileScreen', {
                                 token: token,
@@ -60,12 +62,16 @@ const ProfileScreen = ({ route }) => {
                         } />
                 </View>
 
-                <Image
-                    source={require("../assets/bgc.jpg")}
-                    style={styles.bgcImage} />
-                <Image
-                    source={require("../assets/user.jpg")}
-                    style={styles.userImage} />
+                <View style={{width: "100%"}}>
+                    <Image
+                        source={require("../assets/bgc.jpg")}
+                        style={styles.bgcImage} />
+                </View>
+                <View style={{ width: "100%", alignItems: "center", top: -60 }}>
+                    <Image
+                        source={require("../assets/user.jpg")}
+                        style={styles.userImage} />
+                </View>
 
                 <View style={styles.userInfo}>
                     <Text style={styles.name}>{profileData.display_name}</Text>
@@ -167,34 +173,37 @@ const ProfileScreen = ({ route }) => {
                     <MyIcon name="chevron-down" size={25} color="white" />
                     <Text style={{ fontWeight: "bold", fontSize: 16, color: "white" }}>Show More</Text>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        // justifyContent: "center",
         backgroundColor: "white",
+    },
+    contentContainer: {
+        flexGrow: 1,
+        alignItems: 'center',
     },
     editIcon: {
         position: "absolute",
         zIndex: 1,
         width: "100%",
-        alignItems: "flex-end",
         top: 20,
-        right: 20,
+        paddingHorizontal: 10,
+        flexDirection: "row",
+        justifyContent: "flex-end",
     },
     bgcImage: {
         width: "100%",
         height: 150,
+        resizeMode: "cover"
     },
     userImage: {
         position: "absolute",
         zIndex: 1,
-        top: 80,
         borderWidth: 2,
         borderColor: "white",
         borderRadius: 100,
@@ -241,9 +250,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderRadius: 10,
         padding: 10,
-        paddingHorizontal: 20,
         marginTop: 20,
         width: "100%",
+        paddingHorizontal: 20,
     },
     experienceSection: {
         width: "100%",
@@ -255,23 +264,29 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     educationSection: {
+        paddingHorizontal: 20,
         width: "100%",
         marginHorizontal: 10,
         borderRadius: 10,
         padding: 10,
-        paddingHorizontal: 20,
         marginTop: 20,
         gap: 10,
     },
     showMoreBtn: {
+        width: "100%",
         flexDirection: "row",
         paddingVertical: 15,
         gap: 5,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#983A8D",
-        width: "100%",
         marginTop: 10,
+    },
+    bottomTabs: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        zIndex: 1,
     },
 });
 

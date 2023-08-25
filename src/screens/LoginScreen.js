@@ -55,23 +55,30 @@ const LoginScreen = ({ navigation }) => {
 
         try {
             const response = await axios.post(`${baseURL}/User/Login`, userData);
-            console.log("response data", response.data);
+            console.log("response data", response);
             console.log("response data durum", response.data["DURUM"]);
+            
+            // Güncellenmiş şifreyi AsyncStorage'den alın
+            const updatedPassword = await AsyncStorage.getItem('updatedPassword');
+            console.log(updatedPassword);
 
             if (response.data["DURUM"]) {
                 const token = response.data.NESNE.token; // Token'i alın
 
-                navigation.navigate('UpdatePassword', { token: token });
-
                 // Burada veritabanında kayıtlı olan e-posta ile giriş yapılıp yapılmadığını kontrol edebilirsiniz.
                 const registeredEmail = response.data.NESNE.email; // Veritabanında kayıtlı e-posta
+
                 if (email === registeredEmail) {
-                    AsyncStorage.setItem('token', token); // Token'i AsyncStorage'ye kaydet
+                    await AsyncStorage.setItem('token', token); // Token'i AsyncStorage'ye kaydet
                     console.log('Login successful!', response.data);
-                    navigation.navigate('ProfileScreen', { token: response.data.NESNE.token }); // Profil sayfasına yönlendir
+                    navigation.navigate('BottomTabsNavigator', {
+                        token: response.data.NESNE.token,
+                        updatedPassword: updatedPassword, // Güncellenmiş şifreyi profil sayfasına geçirin
+                    }); // Profil sayfasına yönlendir
                 }
             } else {
                 console.log('Login failed', 'Incorrect email or password.');
+                Alert.alert('Login failed', 'Incorrect email or password.')
             }
         } catch (error) {
             Alert.alert('An error occurred. Please check your credentials.');

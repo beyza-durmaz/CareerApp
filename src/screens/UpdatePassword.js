@@ -9,12 +9,12 @@ import {
     Pressable,
     Alert
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseURL = 'http://www.kursadozdemir.com';
 
 const UpdatePassword = ({ route, navigation }) => {
     const [oldPassword, setOldPassword] = useState('');
-    const [oldPasswordError, setOldPasswordError] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordError, setNewPasswordError] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -22,13 +22,11 @@ const UpdatePassword = ({ route, navigation }) => {
 
     const handleUpdatePassword = async () => {
         // Şifre boş olmamalıdır.
-        if (!oldPassword || !newPassword || !confirmNewPassword) {
-            setOldPassword('Enter your old password')
+        if (!newPassword || !confirmNewPassword) {
             setNewPasswordError('Enter a new password');
             setConfirmPasswordError('Confirm your new password');
             return;
         } else {
-            setOldPassword('')
             setNewPasswordError('');
             setConfirmPasswordError('');
         }
@@ -53,7 +51,9 @@ const UpdatePassword = ({ route, navigation }) => {
             setNewPasswordError('');
         }
 
+        const token = await AsyncStorage.getItem("token", token)
         const updatedPasswordData = {
+            token: token,
             password: newPassword,
         }
 
@@ -61,11 +61,13 @@ const UpdatePassword = ({ route, navigation }) => {
             const response = await axios.post(`${baseURL}/User/UpdatePassword`,
                 updatedPasswordData
             );
-            console.log("selam", response.data);
+            console.log("ResponseData: ", response);
 
-            if (response.data.DURUM) {
+            if (response.data["DURUM"]) {
                 console.log('Password updated successfully.');
                 Alert.alert('Success', 'Password updated successfully.');
+                // Güncellenmiş şifreyi AsyncStorage'ye kaydedin.
+                await AsyncStorage.setItem('updatedPassword', newPassword);
                 navigation.goBack();
             } else {
                 console.log('Password update failed.', 'Failed to update password.');
@@ -79,8 +81,8 @@ const UpdatePassword = ({ route, navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.innerContainer}>
-                <Text style={styles.title}>Update Password</Text>
+            <Text style={styles.title}>Update Password</Text>
+            <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
                     placeholder="Old Password"
@@ -89,26 +91,28 @@ const UpdatePassword = ({ route, navigation }) => {
                     onChangeText={setOldPassword}
                 />
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, newPasswordError && styles.inputError]}
                     placeholder="New Password"
                     secureTextEntry
                     value={newPassword}
                     onChangeText={setNewPassword}
                 />
+                {setNewPasswordError ? <Text style={styles.errorText}>{newPasswordError}</Text> : null}
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, confirmPasswordError && styles.inputError]}
                     placeholder="Confirm New Password"
                     secureTextEntry
                     value={confirmNewPassword}
                     onChangeText={setConfirmNewPassword}
                 />
-                <Pressable
-                    style={styles.updateButton}
-                    onPress={handleUpdatePassword}
-                >
-                    <Text style={styles.buttonText}>Update Password</Text>
-                </Pressable>
+                {setConfirmPasswordError ? <Text style={styles.errorText}>{newPasswordError}</Text> : null}
             </View>
+            <Pressable
+                style={styles.updateButton}
+                onPress={handleUpdatePassword}
+            >
+                <Text style={styles.buttonText}>Update Password</Text>
+            </Pressable>
         </SafeAreaView>
     )
 }
@@ -116,35 +120,49 @@ const UpdatePassword = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'white',
     },
-    innerContainer: {
-    },
     title: {
-        fontSize: 20,
+        marginTop: 50,
+        fontSize: 22,
         fontWeight: 'bold',
-        marginBottom: 20,
+        marginBottom: 50,
+    },
+    inputContainer: {
+        flex: 1,
+        width: "90%",
+        height: 50,
+        gap: 20,
     },
     input: {
-        width: '80%',
-        height: 40,
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
         paddingHorizontal: 10,
-        marginBottom: 10,
     },
     updateButton: {
+        width: "90%",
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
         backgroundColor: '#007AFF',
-        paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
+        marginBottom: 20,
     },
     buttonText: {
+        fontSize: 16,
         color: 'white',
         fontWeight: 'bold',
+    },
+    inputError: {
+        borderWidth: 1,
+        borderColor: "red",
+    },
+    errorText: {
+        color: 'red',
     },
 });
 
