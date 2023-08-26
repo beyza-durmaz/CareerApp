@@ -10,8 +10,8 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import UpdateProfileScreen from './src/screens/UpdateProfileScreen';
 import UpdatePassword from './src/screens/UpdatePassword';
-import GetAllUserScreen from './src/screens/GetAllUserScreen';
 import BottomTabsNavigator from './src/navigation/BottomTabsNavigator';
+import ConnectionScreen from './src/screens/ConnectionScreen';
 
 const App = () => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -46,7 +46,7 @@ const App = () => {
         <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
         <Stack.Screen name='UpdateProfileScreen' component={UpdateProfileScreen} />
         <Stack.Screen name='UpdatePassword' component={UpdatePassword} />
-        <Stack.Screen name='GetAllUserScreen' component={GetAllUserScreen} />
+        <Stack.Screen name='ConnectionScreen' component={ConnectionScreen} />
         <Stack.Screen name="BottomTabsNavigator" component={BottomTabsNavigator} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>

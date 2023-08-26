@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -14,11 +14,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const baseURL = 'http://www.kursadozdemir.com';
 
 const UpdatePassword = ({ route, navigation }) => {
-    const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordError, setNewPasswordError] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+    const [token, setToken] = useState('');
+
+    const updatedPassword = route.params.updatedPassword;
+    console.log("Güncellenmiş Şifre: ",updatedPassword);
+
+    useEffect(() => {
+        const fetchToken = async () => {
+            const fetchedToken = await AsyncStorage.getItem('token');
+            setToken(fetchedToken);
+        };
+        fetchToken();
+    }, []);
 
     const handleUpdatePassword = async () => {
         // Şifre boş olmamalıdır.
@@ -51,7 +62,6 @@ const UpdatePassword = ({ route, navigation }) => {
             setNewPasswordError('');
         }
 
-        const token = await AsyncStorage.getItem("token", token)
         const updatedPasswordData = {
             token: token,
             password: newPassword,
@@ -61,7 +71,8 @@ const UpdatePassword = ({ route, navigation }) => {
             const response = await axios.post(`${baseURL}/User/UpdatePassword`,
                 updatedPasswordData
             );
-            console.log("ResponseData: ", response);
+            console.log("Şifre Güncellendi: ", response.data);
+            Alert.alert('Başarılı', 'Şifre güncellendi.');
 
             if (response.data["DURUM"]) {
                 console.log('Password updated successfully.');
@@ -84,20 +95,13 @@ const UpdatePassword = ({ route, navigation }) => {
             <Text style={styles.title}>Update Password</Text>
             <View style={styles.inputContainer}>
                 <TextInput
-                    style={styles.input}
-                    placeholder="Old Password"
-                    secureTextEntry
-                    value={oldPassword}
-                    onChangeText={setOldPassword}
-                />
-                <TextInput
                     style={[styles.input, newPasswordError && styles.inputError]}
                     placeholder="New Password"
                     secureTextEntry
                     value={newPassword}
                     onChangeText={setNewPassword}
                 />
-                {setNewPasswordError ? <Text style={styles.errorText}>{newPasswordError}</Text> : null}
+                {newPasswordError ? <Text style={styles.errorText}>{newPasswordError}</Text> : null}
                 <TextInput
                     style={[styles.input, confirmPasswordError && styles.inputError]}
                     placeholder="Confirm New Password"
@@ -105,7 +109,7 @@ const UpdatePassword = ({ route, navigation }) => {
                     value={confirmNewPassword}
                     onChangeText={setConfirmNewPassword}
                 />
-                {setConfirmPasswordError ? <Text style={styles.errorText}>{newPasswordError}</Text> : null}
+                {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
             </View>
             <Pressable
                 style={styles.updateButton}

@@ -24,6 +24,8 @@ const ProfileScreen = ({ route }) => {
         fetchProfileData();
     }, [])
 
+    const token = AsyncStorage.getItem('token');
+
     const fetchProfileData = async () => {
         try {
             const token = await AsyncStorage.getItem('token');

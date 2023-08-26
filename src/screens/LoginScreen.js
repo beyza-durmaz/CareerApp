@@ -20,6 +20,8 @@ const LoginScreen = ({ navigation }) => {
 
     const baseURL = 'http://www.kursadozdemir.com';
 
+    const updatedPassword = AsyncStorage.getItem('updatedPassword');
+
     const handleLogin = async () => {
 
         // E-posta ve şifre boş olmamalıdır.
@@ -52,6 +54,7 @@ const LoginScreen = ({ navigation }) => {
             password
         };
         console.log("User Info: ", userData);
+
 
         try {
             const response = await axios.post(`${baseURL}/User/Login`, userData);
@@ -127,7 +130,9 @@ const LoginScreen = ({ navigation }) => {
             <View style={{ alignSelf: "flex-end", marginVertical: 20 }}>
                 <Text
                     style={{ color: "#333" }}
-                    onPress={() => { navigation.navigate('UpdatePassword') }}>
+                    onPress={() => { navigation.navigate('UpdatePassword', {
+                        updatedPassword: updatedPassword,
+                    }) }}>
                     Forgot your password?
                 </Text>
             </View>

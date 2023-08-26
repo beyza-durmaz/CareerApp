@@ -13,18 +13,24 @@ import {
 import MyIcon from '../components/MyIcon';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseURL = 'http://www.kursadozdemir.com';
 
 const UpdateProfileScreen = ({ route }) => {
     const [newDisplayName, setNewDisplayName] = useState(route.params.profileData.display_name);
     const [newJobTitle, setNewJobTitle] = useState(route.params.profileData.job_title);
+    const [token, setToken] = useState('');
 
     const navigation = useNavigation();
 
-    const token = route.params.token;
-    console.log(route.params);
-    console.log("profileData bilgisi: ", route.params.profileData);
+    useEffect(() => {
+        const fetchToken = async () => {
+            const fetchedToken = await AsyncStorage.getItem('token');
+            setToken(fetchedToken);
+        };
+        fetchToken();
+    }, []);
 
     // Cihazın boyutlarını al
     const windowHeight = Dimensions.get('window').height;
@@ -32,14 +38,15 @@ const UpdateProfileScreen = ({ route }) => {
     // Eğer ekran boyutu 500'den küçükse, bgcImage boyutunu düşür
     const bgcImageHeight = windowHeight < 500 ? windowHeight : 500;
 
-    const updateProfile = () => {
+    const updateProfile = async () => {
+
         const updatedData = {
             token: token,
             display_name: newDisplayName,
             job_title: newJobTitle,
         };
 
-        axios.post(`${baseURL}/User/UpdateProfile`, updatedData)
+        await axios.post(`${baseURL}/User/UpdateProfile`, updatedData)
             .then(response => {
                 console.log('Profil güncellendi:', response.data);
                 Alert.alert('Başarılı', 'Profil güncellendi.');
@@ -68,13 +75,21 @@ const UpdateProfileScreen = ({ route }) => {
                             size={30}
                             color="white"
                             onPress={
-                                () => navigation.goBack(    )
+                                () => navigation.goBack()
                             } />
                         <Text style={styles.title}>Edit Profile</Text>
                     </View>
-                    <Image source={require("../assets/bgc.jpg")} style={[styles.bgcImage, { height: bgcImageHeight }]} />
-                    <Image source={require("../assets/user.jpg")} style={styles.userImage} />
-                    <MyIcon name="camera-outline" size={22} color="white" style={styles.cameraIcon} />
+                    <Image
+                        source={require("../assets/bgc.jpg")}
+                        style={[styles.bgcImage, { height: bgcImageHeight }]} />
+                    <Image
+                        source={require("../assets/user.jpg")}
+                        style={styles.userImage} />
+                    <MyIcon
+                        name="camera-outline"
+                        size={22}
+                        color="white"
+                        style={styles.cameraIcon} />
                 </View>
 
                 <View style={styles.innerContainer}>
