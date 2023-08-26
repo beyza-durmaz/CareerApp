@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         marginBottom: 20,
-        color: "#1773EA",
+        color: "#283C8D",
         letterSpacing: 1,
     },
     desc: {
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     loginBtn: {
-        backgroundColor: '#1773EA',
+        backgroundColor: '#283C8D',
         borderRadius: 5,
         height: 50,
         width: '100%',
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     textBtn: {
-        color: '#1773EA',
+        color: '#283C8D',
         fontWeight: 'bold',
     },
 });
