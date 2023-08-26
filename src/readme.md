@@ -9,3 +9,5 @@
 
   <img src="https://user-images.githubusercontent.com/116080244/263275398-3388b689-63c2-4419-8754-63ab611a8547.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
 </div>
+
+![Screenshot_1693041038](https://github.com/beyza-durmaz/CareerApp/assets/116080244/9030d6cd-1ae9-43f0-a214-e00a1d15ce85)
