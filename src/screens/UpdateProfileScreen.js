@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     updateButton: {
         width: '100%',
         height: 50,
-        backgroundColor: '#1773EA',
+        backgroundColor: '#283C8D',
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
