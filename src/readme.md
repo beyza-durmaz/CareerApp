@@ -11,3 +11,5 @@
 
   <img src="https://user-images.githubusercontent.com/116080244/263514074-7625eaf2-33b4-4df2-a3a0-9c9770026310.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
 </div>
+
+![Screenshot_1693133917](https://github.com/beyza-durmaz/CareerApp/assets/116080244/1137fd79-3496-416d-bb17-0ee62065230d)
