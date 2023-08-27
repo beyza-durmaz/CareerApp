@@ -25,7 +25,7 @@ const SignupScreen = ({ navigation }) => {
 
     const handleSignup = async () => {
         const emailPattern = /\S+@\S+\.\S+/;
-        const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        // const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
         const userData = {
             display_name: displayName,
@@ -52,26 +52,27 @@ const SignupScreen = ({ navigation }) => {
             setEmailError('');
         }
 
-        if (!passwordPattern.test(password)) {
-            setPasswordError(
-                'Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.'
-            );
-        } else {
-            setPasswordError('');
-        }
+        // if (!passwordPattern.test(password)) {
+        //     setPasswordError(
+        //         'Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.'
+        //     );
+        // } else {
+        //     setPasswordError('');
+        // }
 
         if (!displayName || !jobTitle || !email || !password) {
             console.log('Please enter all inputs');
         } else if (!emailPattern.test(email)) {
             console.log('Login failed', 'Please enter a valid email address.');
-        } else if (!passwordPattern.test(password)) {
-            console.log(
-                'Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.'
-            );
+        // } else if (!passwordPattern.test(password)) {
+        //     console.log(
+        //         'Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.'
+        //     );
         } else {
             try {
                 const response = await axios.post(`${baseURL}/User/Register`, userData);
-                console.log('Signup response:', response.data);
+                console.log('Signup response:', response);
+                console.log('Signup response data:', response.data);
 
                 if (response.data.DURUM) {
                     navigation.navigate('LoginScreen');

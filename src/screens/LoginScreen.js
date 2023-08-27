@@ -17,11 +17,11 @@ const LoginScreen = ({ navigation }) => {
     const [emailError, setEmailError] = useState('');
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
-
+    
     const baseURL = 'http://www.kursadozdemir.com';
-
-    const updatedPassword = AsyncStorage.getItem('updatedPassword');
-
+    
+    // const updatedPassword = AsyncStorage.getItem('updatedPassword');
+    
     const handleLogin = async () => {
 
         // E-posta ve şifre boş olmamalıdır.
@@ -42,41 +42,42 @@ const LoginScreen = ({ navigation }) => {
             setEmailError('');
         }
 
-        const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-        if (!passwordPattern.test(password)) {
-            setPasswordError('Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.')
-        } else {
-            setPasswordError('');
-        }
+        // const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        // if (!passwordPattern.test(password)) {
+        //     setPasswordError('Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.')
+        // } else {
+        //     setPasswordError('');
+        // }
 
         const userData = {
-            email,
-            password
+            email: email,
+            password: password
         };
         console.log("User Info: ", userData);
 
 
         try {
             const response = await axios.post(`${baseURL}/User/Login`, userData);
-            console.log("response data", response);
-            console.log("response data durum", response.data["DURUM"]);
-            
+            console.log("response data: ", response);
+            console.log("response data: ", response.data);
+            console.log("response data durum: ", response.data["DURUM"]);
             // Güncellenmiş şifreyi AsyncStorage'den alın
-            const updatedPassword = await AsyncStorage.getItem('updatedPassword');
-            console.log(updatedPassword);
+            // const updatedPassword = await AsyncStorage.getItem('updatedPassword');
+            // console.log(updatedPassword);
 
             if (response.data["DURUM"]) {
                 const token = response.data.NESNE.token; // Token'i alın
-
+                console.log("Token: ", token);
                 // Burada veritabanında kayıtlı olan e-posta ile giriş yapılıp yapılmadığını kontrol edebilirsiniz.
                 const registeredEmail = response.data.NESNE.email; // Veritabanında kayıtlı e-posta
+                console.log("Kayıtlı email: ", registeredEmail);
+                console.log("Email: ", email);
 
                 if (email === registeredEmail) {
                     await AsyncStorage.setItem('token', token); // Token'i AsyncStorage'ye kaydet
                     console.log('Login successful!', response.data);
                     navigation.navigate('BottomTabsNavigator', {
                         token: response.data.NESNE.token,
-                        updatedPassword: updatedPassword, // Güncellenmiş şifreyi profil sayfasına geçirin
                     }); // Profil sayfasına yönlendir
                 }
             } else {
@@ -107,7 +108,7 @@ const LoginScreen = ({ navigation }) => {
                         setEmailError('')
                     }}
                 />
-                {setEmailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+                {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
             </View>
 
             {/* Password Input */}
@@ -125,7 +126,7 @@ const LoginScreen = ({ navigation }) => {
                         setPasswordError('')
                     }}
                 />
-                {setPasswordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
             </View>
             <View style={{ alignSelf: "flex-end", marginVertical: 20 }}>
                 <Text
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
         paddingLeft: 50,
+        marginBottom: 20,
     },
     inputError: {
         borderWidth: 1,
