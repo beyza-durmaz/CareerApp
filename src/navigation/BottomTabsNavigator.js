@@ -35,7 +35,7 @@ const BottomTabsNavigator = () => {
         component={ShareScreen}
         options={{
           tabBarIcon: () => (
-            <MyIcon name="share" color="black" size={25} />
+            <MyIcon name="add-circle" color="black" size={25} />
           ),
         }} />
       <Tab.Screen

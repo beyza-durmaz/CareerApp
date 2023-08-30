@@ -93,7 +93,7 @@ const ConnectionScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginHorizontal: 20 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginHorizontal: 20, padding: 10 }}>
           <Text style={{ paddingVertical: 10, fontSize: 25, fontWeight: "bold", color: "#283C8D" }}>Connection</Text>
           <MyIcon name="search" size={25} color="#283C8D" />
         </View>
@@ -141,6 +141,7 @@ const ConnectionScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 40,
     backgroundColor: "#fff",
   },
   userContainer: {

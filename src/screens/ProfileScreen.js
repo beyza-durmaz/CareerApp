@@ -78,6 +78,7 @@ const ProfileScreen = ({ route }) => {
                 <View style={styles.userInfo}>
                     <Text style={styles.name}>{profileData.display_name}</Text>
                     <Text style={styles.jobTitle}>{profileData.job_title}</Text>
+                    <Text style={{color: "#983A8D", fontSize: 18, fontWeight: "bold", padding: 10}}>500+</Text>
                     <Text style={styles.email}>{profileData.email}</Text>
                 </View>
 
@@ -171,6 +172,8 @@ const ProfileScreen = ({ route }) => {
                         </View>
                     </View>
                 </View>
+
+                {/* SHOW MORE BUTTON */}
                 <View style={styles.showMoreBtn}>
                     <MyIcon name="chevron-down" size={25} color="white" />
                     <Text style={{ fontWeight: "bold", fontSize: 16, color: "white" }}>Show More</Text>
@@ -246,7 +249,6 @@ const styles = StyleSheet.create({
     email: {
         fontSize: 14,
         color: '#666',
-        marginTop: 20,
     },
     aboutSection: {
         marginHorizontal: 10,
