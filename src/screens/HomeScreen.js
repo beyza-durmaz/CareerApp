@@ -19,7 +19,6 @@ const HomeScreen = ({ route }) => {
   const [commentText, setCommentText] = useState('');
   const [commentInputVisibilityList, setCommentInputVisibilityList] = useState([]);
 
-
   const baseURL = 'http://www.kursadozdemir.com';
 
   useEffect(() => {
@@ -35,20 +34,13 @@ const HomeScreen = ({ route }) => {
   const fetchShareList = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-      const followingUsers = await AsyncStorage.getItem('followingUsers');
-      const followingUserIds = JSON.parse(followingUsers);
-      console.log("following", followingUserIds);
-
       const response = await axios.post(`${baseURL}/Share/GetTimeline`, {
         token,
       });
       if (response.data["DURUM"]) {
         const data = response.data.NESNE;
-
-        const filteredShareList = data.filter(item => followingUserIds.includes(item.user_id));
-
-        setShareList(filteredShareList);
-        console.log("Share List", filteredShareList);
+        setShareList(data);
+        console.log("Share List", shareList);
       } else {
         console.log('API request failed');
       }
@@ -195,15 +187,13 @@ const HomeScreen = ({ route }) => {
                   </View>
                 </View>
                 <View>
-                  {shareList.map((share) => (
-                    <View key={item.share_id}>
-                      {item.share_id === share.share_id ? (
-                        <MyIcon name="close-outline" size={25} onPress={() => handleDeleteShare(item.share_id)} />
-                      ) : (
-                        <MyIcon name="ellipsis-vertical" size={25} />
-                      )}
-                    </View>
-                  ))}
+                  <View key={item.share_id}>
+                    {item.share_id !== item.share_id ? (
+                      <MyIcon name="ellipsis-vertical" size={25} />
+                    ) : (
+                      <MyIcon name="close-outline" size={25} onPress={() => handleDeleteShare(item.share_id)} />
+                    )}
+                  </View>
                 </View>
               </View>
               <View style={styles.postBody}>
@@ -226,7 +216,7 @@ const HomeScreen = ({ route }) => {
                       )
                     }
                     <Text style={{ fontSize: 13 }}>
-                      {item.like_status === 1 ? 'Unlike' : 'Like'}
+                      {item.like_status === 1 ? 'Like' : 'Like'}
                     </Text>
                   </View>
                   <View style={{ alignItems: "center" }}>
@@ -293,7 +283,7 @@ const HomeScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 60,
+    paddingBottom: 60,
     backgroundColor: "#fff",
   },
   shareContainer: {
