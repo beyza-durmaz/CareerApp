@@ -5,7 +5,7 @@
 
   <img src="https://user-images.githubusercontent.com/116080244/263454687-9030d6cd-1ae9-43f0-a214-e00a1d15ce85.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
 
-  <img src="https://user-images.githubusercontent.com/116080244/263513870-4112dd96-3405-4bb8-b5a4-e82183e890e1.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
+  <img src="https://user-images.githubusercontent.com/116080244/265202958-d2abf0d5-fcbd-4194-b1d2-d483affac3bf.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
 
   <img src="https://user-images.githubusercontent.com/116080244/263513873-ab86e653-59eb-4ab1-98f7-e10414642aef.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
 
@@ -15,5 +15,3 @@
 
   <img src="https://user-images.githubusercontent.com/116080244/265202747-b1cd30ea-a8fa-4302-a5ef-e04e6f6ce4eb.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
 </div>
-
-![Screenshot_1693655531](https://github.com/beyza-durmaz/CareerApp/assets/116080244/d2abf0d5-fcbd-4194-b1d2-d483affac3bf)
