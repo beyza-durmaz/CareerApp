@@ -17,13 +17,10 @@ const LoginScreen = ({ navigation }) => {
     const [emailError, setEmailError] = useState('');
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    
-    const baseURL = 'http://www.kursadozdemir.com';
-    
-    // const updatedPassword = AsyncStorage.getItem('updatedPassword');
-    
-    const handleLogin = async () => {
 
+    const baseURL = 'http://www.kursadozdemir.com';
+
+    const handleLogin = async () => {
         // E-posta ve şifre boş olmamalıdır.
         if (!email || !password) {
             setEmailError('Enter an email address')
@@ -42,44 +39,26 @@ const LoginScreen = ({ navigation }) => {
             setEmailError('');
         }
 
-        // const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-        // if (!passwordPattern.test(password)) {
-        //     setPasswordError('Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.')
-        // } else {
-        //     setPasswordError('');
-        // }
-
-        const userData = {
-            email: email,
-            password: password
-        };
-        console.log("User Info: ", userData);
-
-
         try {
-            const response = await axios.post(`${baseURL}/User/Login`, userData);
-            console.log("response data: ", response);
+            const response = await axios.post(`${baseURL}/User/Login`, {
+                email: email,
+                password: password,
+            });
+            console.log("response: ", response);
             console.log("response data: ", response.data);
             console.log("response data durum: ", response.data["DURUM"]);
-            // Güncellenmiş şifreyi AsyncStorage'den alın
-            // const updatedPassword = await AsyncStorage.getItem('updatedPassword');
-            // console.log(updatedPassword);
 
             if (response.data["DURUM"]) {
                 const token = response.data.NESNE.token; // Token'i alın
                 console.log("Token: ", token);
-                // Burada veritabanında kayıtlı olan e-posta ile giriş yapılıp yapılmadığını kontrol edebilirsiniz.
-                const registeredEmail = response.data.NESNE.email; // Veritabanında kayıtlı e-posta
-                console.log("Kayıtlı email: ", registeredEmail);
                 console.log("Email: ", email);
+                
+                await AsyncStorage.setItem('token', token); // Token'i AsyncStorage'ye kaydet
+                console.log('Login successful!', response.data);
+                navigation.navigate('BottomTabsNavigator', {
+                    token: response.data.NESNE.token,
+                }); // Profil sayfasına yönlendir
 
-                if (email === registeredEmail) {
-                    await AsyncStorage.setItem('token', token); // Token'i AsyncStorage'ye kaydet
-                    console.log('Login successful!', response.data);
-                    navigation.navigate('BottomTabsNavigator', {
-                        token: response.data.NESNE.token,
-                    }); // Profil sayfasına yönlendir
-                }
             } else {
                 console.log('Login failed', 'Incorrect email or password.');
                 Alert.alert('Login failed', 'Incorrect email or password.')
@@ -130,10 +109,7 @@ const LoginScreen = ({ navigation }) => {
             </View>
             <View style={{ alignSelf: "flex-end", marginVertical: 20 }}>
                 <Text
-                    style={{ color: "#333" }}
-                    onPress={() => { navigation.navigate('UpdatePassword', {
-                        updatedPassword: updatedPassword,
-                    }) }}>
+                    style={{ color: "#333" }}>
                     Forgot your password?
                 </Text>
             </View>

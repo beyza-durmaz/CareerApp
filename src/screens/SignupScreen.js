@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import MyIcon from '../components/MyIcon';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignupScreen = ({ navigation }) => {
     const [displayName, setDisplayName] = useState('');
@@ -24,16 +25,6 @@ const SignupScreen = ({ navigation }) => {
     const baseURL = 'http://www.kursadozdemir.com';
 
     const handleSignup = async () => {
-        const emailPattern = /\S+@\S+\.\S+/;
-        // const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
-        const userData = {
-            display_name: displayName,
-            job_title: jobTitle,
-            email: email,
-            password: password,
-        };
-
         if (!displayName) {
             setDisplayNameError('Please enter a name');
         } else {
@@ -46,28 +37,24 @@ const SignupScreen = ({ navigation }) => {
             setJobTitleError('');
         }
 
+        const emailPattern = /\S+@\S+\.\S+/;
         if (!emailPattern.test(email)) {
             setEmailError('Please enter a valid email address');
         } else {
             setEmailError('');
         }
 
-        // if (!passwordPattern.test(password)) {
-        //     setPasswordError(
-        //         'Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.'
-        //     );
-        // } else {
-        //     setPasswordError('');
-        // }
+        const userData = {
+            display_name: displayName,
+            job_title: jobTitle,
+            email: email,
+            password: password,
+        };
 
         if (!displayName || !jobTitle || !email || !password) {
             console.log('Please enter all inputs');
         } else if (!emailPattern.test(email)) {
             console.log('Login failed', 'Please enter a valid email address.');
-        // } else if (!passwordPattern.test(password)) {
-        //     console.log(
-        //         'Password should contain at least one digit, one lowercase letter, one uppercase letter, and be at least 6 characters long.'
-        //     );
         } else {
             try {
                 const response = await axios.post(`${baseURL}/User/Register`, userData);
@@ -75,6 +62,9 @@ const SignupScreen = ({ navigation }) => {
                 console.log('Signup response data:', response.data);
 
                 if (response.data.DURUM) {
+                    await AsyncStorage.setItem('userEmail', email);
+                    await AsyncStorage.setItem('userPassword', password);
+
                     navigation.navigate('LoginScreen');
                 } else {
                     Alert.alert(
@@ -159,7 +149,7 @@ const SignupScreen = ({ navigation }) => {
                         setPasswordError('')
                     }}
                 />
-                {setPasswordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
             </View>
 
             <Pressable style={styles.signupButton} onPress={handleSignup}>

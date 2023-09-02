@@ -17,7 +17,6 @@ import MyIcon from '../components/MyIcon';
 const HomeScreen = ({ route }) => {
   const [shareList, setShareList] = useState([]);
   const [commentText, setCommentText] = useState('');
-  const [commentsList, setCommentsList] = useState([]);
   const [commentInputVisibilityList, setCommentInputVisibilityList] = useState([]);
 
 
@@ -39,11 +38,11 @@ const HomeScreen = ({ route }) => {
       const response = await axios.post(`${baseURL}/Share/GetTimeline`, {
         token,
       });
-      if (response.data.DURUM) {
+      if (response.data["DURUM"]) {
+        console.log("Response Data: ", response.data);
         console.log("Response Data Nesne: ", response.data.NESNE);
         const data = response.data.NESNE;
         setShareList(data);
-        setCommentInputVisibilityList(new Array(data.length).fill(false));
       } else {
         console.log('API request failed');
       }
@@ -251,15 +250,11 @@ const HomeScreen = ({ route }) => {
                         value={commentText}
                         onChangeText={setCommentText}
                       />
-                      {
-                        item.share_id === item.share_id ? (
-                          <TouchableOpacity
-                            onPress={() => handleSendComment(item.share_id)}
-                            style={styles.sendButton}>
-                            <Text style={{ color: 'white' }}>Send</Text>
-                          </TouchableOpacity>
-                        ) : null
-                      }
+                      <TouchableOpacity
+                        onPress={() => handleSendComment(item.share_id)}
+                        style={styles.sendButton}>
+                        <Text style={{ color: 'white' }}>Send</Text>
+                      </TouchableOpacity>
                     </View>
                     <View style={styles.commentList}>
                       {item.comments.map((comment) => (
