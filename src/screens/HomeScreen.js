@@ -120,6 +120,8 @@ const HomeScreen = ({ route }) => {
   }
 
   const handleDeleteComment = async (shareId, commentId) => {
+    console.log("Share Id", shareId);
+    console.log("Comment Id", commentId);
     try {
       const token = await AsyncStorage.getItem("token");
       const response = await axios.post(`${baseURL}/Share/DeleteComment`, {

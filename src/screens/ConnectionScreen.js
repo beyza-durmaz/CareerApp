@@ -108,9 +108,6 @@ const ConnectionScreen = () => {
                   <View style={{ marginLeft: 10 }}>
                     <Text style={styles.displayName}>{item.display_name}</Text>
                     <Text style={styles.jobTitle}>{item.job_title}</Text>
-                    {/* <Text style={styles.followStatus}>
-                    {item.follow_status === 1 ? 'Takip Ediliyor' : 'Takip Edilmiyor'}
-                  </Text> */}
                   </View>
                 </View>
                 <View style={styles.buttonContainer}>
