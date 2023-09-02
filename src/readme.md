@@ -12,7 +12,6 @@
   <img src="https://user-images.githubusercontent.com/116080244/263514074-7625eaf2-33b4-4df2-a3a0-9c9770026310.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
 
   <img src="https://user-images.githubusercontent.com/116080244/263524008-1137fd79-3496-416d-bb17-0ee62065230d.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
+
+  <img src="https://user-images.githubusercontent.com/116080244/265202747-b1cd30ea-a8fa-4302-a5ef-e04e6f6ce4eb.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
 </div>
-
-![Screenshot_1693655269](https://github.com/beyza-durmaz/CareerApp/assets/116080244/b1cd30ea-a8fa-4302-a5ef-e04e6f6ce4eb)
-
