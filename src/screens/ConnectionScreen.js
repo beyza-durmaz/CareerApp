@@ -30,7 +30,6 @@ const ConnectionScreen = () => {
         });
 
         if (response.data.DURUM) {
-          console.log("Successfull", response.data.NESNE);
           const data = response.data.NESNE;
           setUserList(data)
         } else {
@@ -52,8 +51,9 @@ const ConnectionScreen = () => {
         token,
         follow_user_id: userId,
       });
-
+      
       if (response.data.DURUM) {
+        await AsyncStorage.setItem('followingUsers', JSON.stringify(userId));
         const updatedUserList = userList.map((user) =>
           user.user_id === userId ? { ...user, follow_status: 1 } : user
         );
